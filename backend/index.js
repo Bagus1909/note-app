@@ -61,7 +61,7 @@ app.post("/create-account", async (req, res) => {
   await user.save()
 
   const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1m",
+    expiresIn: "30m",
   })
 
   return res.json({
@@ -94,7 +94,7 @@ app.post("/login", async (req, res) => {
     const user = { user: userInfo }
 
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "1m",
+      expiresIn: "30m",
     })
 
     return res.json({
@@ -304,6 +304,5 @@ app.get("/search-notes", authenticateToken, async (req, res) => {
   }
 })
 
-app.listen(8000)
 
 module.exports = app
