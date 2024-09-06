@@ -86,62 +86,42 @@ app.post("/create-account", async (req, res) => {
 
 // Login
 app.post("/login", async (req, res) => {
-  const { email } = req.body
+  
+  const { email, password } = req.body
 
   if (!email) {
     return res.status(400).json({ message: "Email is required" })
   }
 
-  console.log("Fetching user from database...")
-  const start = Date.now()
-  try {
-    const userInfo = await User.findOne({ email: email })
-    console.log("Database query took", Date.now() - start, "ms")
-    if (userInfo) {
-      return res.json({ message: "User found", userInfo })
-    } else {
-      return res.status(400).json({ message: "User not found" })
-    }
-  } catch (error) {
-    console.error("Database error:", error)
-    return res.status(500).json({ message: "Server error" })
+  if (!password) {
+    return res.status(400).json({ message: "Password is required" })
   }
 
-  // const { email, password } = req.body
+  const userInfo = await User.findOne({ email: email })
 
-  // if (!email) {
-  //   return res.status(400).json({ message: "Email is required" })
-  // }
+  if (!userInfo) {
+    return res.status(400).json({ message: "User not found" })
+  }
 
-  // if (!password) {
-  //   return res.status(400).json({ message: "Password is required" })
-  // }
+  if (userInfo.email == email && userInfo.password == password) {
+    const user = { user: userInfo }
 
-  // const userInfo = await User.findOne({ email: email })
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: "30m",
+    })
 
-  // if (!userInfo) {
-  //   return res.status(400).json({ message: "User not found" })
-  // }
-
-  // if (userInfo.email == email && userInfo.password == password) {
-  //   const user = { user: userInfo }
-
-  //   const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-  //     expiresIn: "30m",
-  //   })
-
-  //   return res.json({
-  //     error: false,
-  //     message: "Login Succesful",
-  //     email,
-  //     accessToken,
-  //   })
-  // } else {
-  //   return res.status(400).json({
-  //     error: true,
-  //     message: "Invalid Credentials",
-  //   })
-  // }
+    return res.json({
+      error: false,
+      message: "Login Succesful",
+      email,
+      accessToken,
+    })
+  } else {
+    return res.status(400).json({
+      error: true,
+      message: "Invalid Credentials",
+    })
+  }
 })
 
 // Get User
