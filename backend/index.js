@@ -21,6 +21,15 @@ const { authenticateToken } = require("./utilities")
 
 app.use(express.json())
 
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Handle SPA
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+
 app.use(
   cors({
     origin: "*",
