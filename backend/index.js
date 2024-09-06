@@ -22,13 +22,6 @@ const { authenticateToken } = require("./utilities")
 
 app.use(express.json())
 
-// Arahkan folder statis dari /frontend
-app.use(express.static(path.join(__dirname, '../frontend')));
-
-// Tangani semua rute dengan mengembalikan index.html dari /frontend
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
-});
 
 app.use(
   cors({
