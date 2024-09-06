@@ -36,6 +36,12 @@ app.use(
   })
 )
 
+// Testing
+app.get("/test", (req, res) => {
+  res.send("API is working!")
+})
+
+
 app.get("/", (req, res) => {
   res.json({ data: "hello" })
 })
