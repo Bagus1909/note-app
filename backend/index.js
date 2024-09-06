@@ -15,20 +15,20 @@ const Note = require("./models/note.model")
 const express = require("express")
 const cors = require("cors")
 const app = express()
+const path = require("path")
 
 const jwt = require("jsonwebtoken")
 const { authenticateToken } = require("./utilities")
 
 app.use(express.json())
 
-// Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
+// Set static folder to serve static assets like CSS, JS, images
+app.use(express.static(path.join(__dirname, "frontend")))
 
-// Handle SPA
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
+// Handle SPA routing by sending index.html for all routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "index.html"))
+})
 
 app.use(
   cors({
