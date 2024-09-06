@@ -22,13 +22,13 @@ const { authenticateToken } = require("./utilities")
 
 app.use(express.json())
 
-// Set static folder to serve static assets like CSS, JS, images
-app.use(express.static(path.join(__dirname, "frontend")))
+// Arahkan folder statis dari /frontend
+app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Handle SPA routing by sending index.html for all routes
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "index.html"))
-})
+// Tangani semua rute dengan mengembalikan index.html dari /frontend
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
+});
 
 app.use(
   cors({
